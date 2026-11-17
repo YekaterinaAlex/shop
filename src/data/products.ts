@@ -1,3 +1,16 @@
+import cloudImage from '../assets/images/cloud.png';
+import twistImage from '../assets/images/twist.png';
+import bubbleImage from '../assets/images/bubble.png';
+import honeycombImage from '../assets/images/honeycomb.png';
+import archImage from '../assets/images/arch.png';
+import blossomImage from '../assets/images/blossom.png';
+import amberGlowImage from '../assets/images/amber-glow.png';
+import lavenderDreamsImage from '../assets/images/lavender-dreams.png';
+import pureLinenImage from '../assets/images/pure-linen.png';
+import goldenHourImage from '../assets/images/golden-hour.png';
+import honeyOakImage from '../assets/images/honey-oak.png';
+import citrusMorningImage from '../assets/images/citrus-morning.png';
+
 export const products = [
   {
     id: 1,
@@ -7,7 +20,7 @@ export const products = [
     waxType: 'soy',
     price: 12,
     weight: 120,
-    image: '../assets/image/cloud.png',
+    image: cloudImage,
   },
   {
     id: 2,
@@ -17,7 +30,7 @@ export const products = [
     waxType: 'soy',
     price: 14,
     weight: 150,
-    image: '../assets/image/twist.png',
+    image: twistImage,
   },
   {
     id: 3,
@@ -27,7 +40,7 @@ export const products = [
     waxType: 'soy',
     price: 11,
     weight: 130,
-    image: '../assets/image/bubble.png',
+    image: bubbleImage,
   },
   {
     id: 4,
@@ -37,7 +50,7 @@ export const products = [
     waxType: 'beeswax',
     price: 16,
     weight: 180,
-    image: '../assets/image/honeycomb.png',
+    image: honeycombImage,
   },
   {
     id: 5,
@@ -47,7 +60,7 @@ export const products = [
     waxType: 'beeswax',
     price: 15,
     weight: 170,
-    image: '../assets/image/arch.png',
+    image: archImage,
   },
   {
     id: 6,
@@ -57,7 +70,7 @@ export const products = [
     waxType: 'beeswax',
     price: 13,
     weight: 140,
-    image: '../assets/image/blossom.png',
+    image: blossomImage,
   },
   {
     id: 7,
@@ -67,7 +80,7 @@ export const products = [
     waxType: 'soy',
     price: 22,
     weight: 200,
-    image: '../assets/image/amber-glow.png',
+    image: amberGlowImage,
   },
   {
     id: 8,
@@ -77,7 +90,7 @@ export const products = [
     waxType: 'soy',
     price: 20,
     weight: 200,
-    image: '../assets/image/lavender-dreams.png',
+    image: lavenderDreamsImage,
   },
   {
     id: 9,
@@ -87,7 +100,7 @@ export const products = [
     waxType: 'soy',
     price: 19,
     weight: 180,
-    image: '../assets/image/pure-linen.png',
+    image: pureLinenImage,
   },
   {
     id: 10,
@@ -97,7 +110,7 @@ export const products = [
     waxType: 'beeswax',
     price: 24,
     weight: 220,
-    image: '../assets/image/golden-hour.png',
+    image: goldenHourImage,
   },
   {
     id: 11,
@@ -107,7 +120,7 @@ export const products = [
     waxType: 'beeswax',
     price: 26,
     weight: 250,
-    image: '../assets/image/honey-oak.png',
+    image: honeyOakImage,
   },
   {
     id: 12,
@@ -117,6 +130,6 @@ export const products = [
     waxType: 'beeswax',
     price: 21,
     weight: 200,
-    image: '../assets/image/citrus-morning.png',
+    image: citrusMorningImage,
   },
 ];
