@@ -1,0 +1,39 @@
+.header {
+  background-color: var(--color-header);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header__container {
+  max-width: 1200px;
+  min-height: 76px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__logo {
+  color: var(--color-text);
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  text-decoration: none;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header__link {
+  color: var(--color-text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.header__link:hover {
+  color: var(--color-primary);
+}
