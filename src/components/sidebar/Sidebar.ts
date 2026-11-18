@@ -113,5 +113,89 @@ export function Sidebar(
     aside.append(wrapper);
   });
 
+  const priceTitle = document.createElement('h2');
+  priceTitle.textContent = 'Price Range';
+
+  const priceRange = document.createElement('div');
+  priceRange.className = 'price-range';
+
+  const activeTrack = document.createElement('div');
+  activeTrack.className = 'price-range-active';
+
+  priceRange.append(activeTrack);
+
+  const minSlider = document.createElement('input');
+  minSlider.type = 'range';
+  minSlider.min = '11';
+  minSlider.max = '26';
+  minSlider.value = '11';
+  minSlider.setAttribute('aria-label', 'Minimum price');
+
+  const maxSlider = document.createElement('input');
+  maxSlider.type = 'range';
+  maxSlider.min = '11';
+  maxSlider.max = '26';
+  maxSlider.value = '26';
+  maxSlider.setAttribute('aria-label', 'Maximum price');
+
+  function updateTrack(): void {
+    const min = Number(minSlider.value);
+    const max = Number(maxSlider.value);
+
+    activeTrack.style.left = `${((min - 11) / 15) * 100}%`;
+    activeTrack.style.width = `${((max - min) / 15) * 100}%`;
+
+    if (min === max && min === 11) {
+      maxSlider.style.zIndex = '3';
+      minSlider.style.zIndex = '2';
+    } else if (min === max && max === 26) {
+      minSlider.style.zIndex = '3';
+      maxSlider.style.zIndex = '2';
+    } else {
+      minSlider.style.zIndex = '2';
+      maxSlider.style.zIndex = '3';
+    }
+  }
+
+  updateTrack();
+
+  updateTrack();
+
+  const priceLabels = document.createElement('div');
+  priceLabels.className = 'price-labels';
+
+  const minLabel = document.createElement('span');
+  minLabel.textContent = '$11';
+
+  const maxLabel = document.createElement('span');
+  maxLabel.textContent = '$26';
+
+  priceLabels.append(minLabel, maxLabel);
+  priceRange.append(minSlider, maxSlider);
+
+  const selectedPrice = document.createElement('p');
+  selectedPrice.className = 'selected-price';
+  selectedPrice.textContent = '$11 – $26';
+
+  minSlider.addEventListener('input', () => {
+    const min = Math.min(Number(minSlider.value), Number(maxSlider.value));
+
+    minSlider.value = String(min);
+    selectedPrice.textContent = `$${min} – $${maxSlider.value}`;
+
+    updateTrack();
+  });
+
+  maxSlider.addEventListener('input', () => {
+    const max = Math.max(Number(maxSlider.value), Number(minSlider.value));
+
+    maxSlider.value = String(max);
+    selectedPrice.textContent = `$${minSlider.value} – $${max}`;
+
+    updateTrack();
+  });
+
+  aside.append(priceTitle, selectedPrice, priceRange, priceLabels);
+
   return aside;
 }
