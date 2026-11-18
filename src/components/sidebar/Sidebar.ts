@@ -3,7 +3,13 @@ import type { SortOption } from '../../utils/sortProducts';
 import './sidebar.css';
 
 export function Sidebar(
-  onChange: (categories: string[], waxTypes: string[], sortBy: SortOption) => void,
+  onChange: (
+    categories: string[],
+    waxTypes: string[],
+    sortBy: SortOption,
+    minPrice: number,
+    maxPrice: number,
+  ) => void,
 ): HTMLElement {
   const aside = document.createElement('aside');
   aside.className = 'sidebar';
@@ -11,6 +17,16 @@ export function Sidebar(
   const selectedCategories: string[] = [];
   const selectedWaxTypes: string[] = [];
   let selectedSort: SortOption = 'featured';
+
+  function notifyChange(): void {
+    onChange(
+      selectedCategories,
+      selectedWaxTypes,
+      selectedSort,
+      Number(minSlider.value),
+      Number(maxSlider.value),
+    );
+  }
 
   const title = document.createElement('h2');
   title.textContent = 'Categories';
@@ -36,7 +52,7 @@ export function Sidebar(
         selectedCategories.splice(index, 1);
       }
 
-      onChange(selectedCategories, selectedWaxTypes, selectedSort);
+      notifyChange();
     });
 
     wrapper.append(checkbox, text);
@@ -67,7 +83,7 @@ export function Sidebar(
         selectedWaxTypes.splice(index, 1);
       }
 
-      onChange(selectedCategories, selectedWaxTypes, selectedSort);
+      notifyChange();
     });
 
     wrapper.append(checkbox, text);
@@ -95,7 +111,7 @@ export function Sidebar(
       if (radio.checked) {
         selectedSort = value as SortOption;
 
-        onChange(selectedCategories, selectedWaxTypes, selectedSort);
+        notifyChange();
       }
     });
 
@@ -184,6 +200,7 @@ export function Sidebar(
     selectedPrice.textContent = `$${min} – $${maxSlider.value}`;
 
     updateTrack();
+    notifyChange();
   });
 
   maxSlider.addEventListener('input', () => {
@@ -193,6 +210,7 @@ export function Sidebar(
     selectedPrice.textContent = `$${minSlider.value} – $${max}`;
 
     updateTrack();
+    notifyChange();
   });
 
   aside.append(priceTitle, selectedPrice, priceRange, priceLabels);
