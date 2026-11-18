@@ -41,6 +41,8 @@ function saveCart(): void {
   } catch {
     // Keep the cart in memory if localStorage is unavailable.
   }
+
+  window.dispatchEvent(new Event('cartchange'));
 }
 
 let cart: CartEntry[] = loadCart();
