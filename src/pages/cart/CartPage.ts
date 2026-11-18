@@ -2,6 +2,8 @@ import { products } from '../../data/products';
 import {
   getCart,
   getCartSubtotal,
+  getActivePromoCode,
+  setActivePromoCode,
   increaseQuantity,
   decreaseQuantity,
   removeFromCart,
@@ -13,8 +15,6 @@ import './cart.css';
 export function CartPage(): HTMLElement {
   const section = document.createElement('section');
   section.className = 'cart';
-
-  let activePromoCode = '';
 
   function render(): void {
     const cart = getCart();
@@ -49,8 +49,8 @@ export function CartPage(): HTMLElement {
       });
     }
 
-    const summary = OrderSummary(getCartSubtotal(), activePromoCode, (code) => {
-      activePromoCode = code;
+    const summary = OrderSummary(getCartSubtotal(), getActivePromoCode(), (code) => {
+      setActivePromoCode(code);
     });
 
     section.replaceChildren(title, itemsContainer, summary);

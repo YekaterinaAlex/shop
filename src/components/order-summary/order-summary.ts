@@ -95,7 +95,7 @@ export function OrderSummary(
     totalValue.textContent = `$${total.toFixed(2)}`;
   }
 
-  applyButton.addEventListener('click', () => {
+  function applyPromoCode(): void {
     const code = promoInput.value.trim().toUpperCase();
 
     if (code === PROMO_CODE) {
@@ -109,6 +109,14 @@ export function OrderSummary(
       promoMessage.textContent = code ? 'Invalid promo code.' : 'Please enter a promo code.';
       promoMessage.className = 'order-summary__promo-message order-summary__promo-message--error';
     }
+  }
+
+  applyButton.addEventListener('click', applyPromoCode);
+
+  promoInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      applyPromoCode();
+    }
   });
 
   if (promoCode === PROMO_CODE) {
@@ -118,6 +126,16 @@ export function OrderSummary(
   } else {
     updateTotals('');
   }
+
+  promoInput.addEventListener('input', () => {
+    if (promoInput.value.trim() === '') {
+      onApplyPromo('');
+      updateTotals('');
+
+      promoMessage.textContent = '';
+      promoMessage.className = 'order-summary__promo-message';
+    }
+  });
 
   const checkoutButton = document.createElement('button');
   checkoutButton.className = 'btn-primary';

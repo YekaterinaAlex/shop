@@ -6,9 +6,9 @@ export type CartEntry = {
 };
 
 const CART_STORAGE_KEY = 'candle-shop-cart';
-
 const PROMO_CODE = 'SALE10';
 const DISCOUNT_RATE = 0.1;
+let activePromoCode = '';
 
 function loadCart(): CartEntry[] {
   try {
@@ -99,4 +99,12 @@ export function getDiscountAmount(promoCode: string): number {
 
 export function getCartTotal(promoCode = ''): number {
   return getCartSubtotal() - getDiscountAmount(promoCode);
+}
+
+export function getActivePromoCode(): string {
+  return activePromoCode;
+}
+
+export function setActivePromoCode(code: string): void {
+  activePromoCode = code;
 }
