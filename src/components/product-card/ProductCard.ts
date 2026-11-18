@@ -1,4 +1,5 @@
 import type { Product } from '../../types/Product';
+import { addToCart } from '../../state/cart-state';
 import './product-card.css';
 
 export function ProductCard(product: Product): HTMLElement {
@@ -27,6 +28,10 @@ export function ProductCard(product: Product): HTMLElement {
   button.className = 'product-card-button';
   button.type = 'button';
   button.textContent = 'Add to Cart';
+
+  button.addEventListener('click', () => {
+    addToCart(product.id);
+  });
 
   card.append(image, title, type, price, button);
 
