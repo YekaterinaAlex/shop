@@ -22,13 +22,19 @@ export function CatalogPage(): HTMLElement {
   const layout = document.createElement('div');
   layout.className = 'layout';
 
-  function renderProducts(categories: string[], waxTypes: string[], sortBy: SortOption): void {
+  function renderProducts(
+    categories: string[],
+    waxTypes: string[],
+    sortBy: SortOption,
+    minPrice: number,
+    maxPrice: number,
+  ): void {
     const filtered = products.filter((product) => {
       const matchesCategory = categories.length === 0 || categories.includes(product.candleType);
-
+      const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
       const matchesWax = waxTypes.length === 0 || waxTypes.includes(product.waxType);
 
-      return matchesCategory && matchesWax;
+      return matchesCategory && matchesWax && matchesPrice;
     });
 
     const sorted = sortProducts(filtered, sortBy);
@@ -41,7 +47,7 @@ export function CatalogPage(): HTMLElement {
   layout.append(sidebar, grid);
   section.append(title, layout);
 
-  renderProducts([], [], 'featured');
+  renderProducts([], [], 'featured', 11, 26);
 
   return section;
 }
