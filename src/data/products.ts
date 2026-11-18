@@ -1,3 +1,5 @@
+import type { Product } from '../types/Product';
+
 import cloudImage from '../assets/images/cloud.png';
 import twistImage from '../assets/images/twist.png';
 import bubbleImage from '../assets/images/bubble.png';
@@ -11,7 +13,7 @@ import goldenHourImage from '../assets/images/golden-hour.png';
 import honeyOakImage from '../assets/images/honey-oak.png';
 import citrusMorningImage from '../assets/images/citrus-morning.png';
 
-export const products = [
+export const products: Product[] = [
   {
     id: 1,
     name: 'Cloud',
