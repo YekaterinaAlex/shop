@@ -23,6 +23,9 @@ export function CartPage(): HTMLElement {
     const title = document.createElement('h1');
     title.textContent = `Your items (${totalItems})`;
 
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'cart__items';
+
     if (cart.length === 0) {
       const emptyState = document.createElement('div');
       emptyState.className = 'cart__empty';
@@ -35,21 +38,16 @@ export function CartPage(): HTMLElement {
       link.textContent = '← Continue shopping';
 
       emptyState.append(message, link);
-      section.replaceChildren(title, emptyState);
+      itemsContainer.append(emptyState);
+    } else {
+      cart.forEach((item) => {
+        const product = products.find((product) => product.id === item.productId);
 
-      return;
+        if (!product) return;
+
+        itemsContainer.append(CartItem(product, item.quantity));
+      });
     }
-
-    const itemsContainer = document.createElement('div');
-    itemsContainer.className = 'cart__items';
-
-    cart.forEach((item) => {
-      const product = products.find((product) => product.id === item.productId);
-
-      if (!product) return;
-
-      itemsContainer.append(CartItem(product, item.quantity));
-    });
 
     const summary = OrderSummary(getCartSubtotal(), activePromoCode, (code) => {
       activePromoCode = code;
