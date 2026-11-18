@@ -1,12 +1,16 @@
 import { filters } from '../../data/filters';
+import type { SortOption } from '../../utils/sortProducts';
 import './sidebar.css';
 
-export function Sidebar(onChange: (categories: string[], waxTypes: string[]) => void): HTMLElement {
+export function Sidebar(
+  onChange: (categories: string[], waxTypes: string[], sortBy: SortOption) => void,
+): HTMLElement {
   const aside = document.createElement('aside');
   aside.className = 'sidebar';
 
   const selectedCategories: string[] = [];
   const selectedWaxTypes: string[] = [];
+  let selectedSort: SortOption = 'featured';
 
   const title = document.createElement('h2');
   title.textContent = 'Categories';
@@ -32,7 +36,7 @@ export function Sidebar(onChange: (categories: string[], waxTypes: string[]) => 
         selectedCategories.splice(index, 1);
       }
 
-      onChange(selectedCategories, selectedWaxTypes);
+      onChange(selectedCategories, selectedWaxTypes, selectedSort);
     });
 
     wrapper.append(checkbox, text);
@@ -63,11 +67,51 @@ export function Sidebar(onChange: (categories: string[], waxTypes: string[]) => 
         selectedWaxTypes.splice(index, 1);
       }
 
-      onChange(selectedCategories, selectedWaxTypes);
+      onChange(selectedCategories, selectedWaxTypes, selectedSort);
     });
 
     wrapper.append(checkbox, text);
     aside.append(wrapper);
   });
+
+  const sortTitle = document.createElement('h2');
+  sortTitle.textContent = 'Sort By';
+
+  aside.append(sortTitle);
+
+  const sortOptions = [
+    { value: 'featured', label: 'Featured' },
+    { value: 'price-asc', label: 'Price: Low to High' },
+    { value: 'price-desc', label: 'Price: High to Low' },
+  ];
+
+  sortOptions.forEach(({ value, label }) => {
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'sort';
+    radio.value = value;
+
+    radio.addEventListener('change', () => {
+      if (radio.checked) {
+        selectedSort = value as SortOption;
+
+        onChange(selectedCategories, selectedWaxTypes, selectedSort);
+      }
+    });
+
+    if (value === 'featured') {
+      radio.checked = true;
+    }
+
+    const wrapper = document.createElement('label');
+    wrapper.className = 'sidebar-option';
+
+    const text = document.createElement('span');
+    text.textContent = label;
+
+    wrapper.append(radio, text);
+    aside.append(wrapper);
+  });
+
   return aside;
 }
