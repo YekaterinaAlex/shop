@@ -109,6 +109,14 @@
 .order-summary .btn-primary {
   width: 100%;
   margin: 20px 0;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
 }
 
 .order-summary .btn-primary:disabled {
