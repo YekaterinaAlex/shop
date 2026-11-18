@@ -1,4 +1,5 @@
 import { filters } from '../../data/filters';
+import './sidebar.css';
 
 export function Sidebar(onChange: (categories: string[], waxTypes: string[]) => void): HTMLElement {
   const aside = document.createElement('aside');

@@ -1,0 +1,42 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  width: 250px;
+  flex-shrink: 0;
+
+  padding-right: 24px;
+  border-right: 1px solid var(--color-border);
+}
+
+.sidebar h2 {
+  margin: 0 0 8px;
+
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.sidebar-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 14px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.sidebar-option input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.sidebar h2:not(:first-child) {
+  margin-top: 24px;
+}
