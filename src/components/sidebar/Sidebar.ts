@@ -69,5 +69,37 @@ export function Sidebar(onChange: (categories: string[], waxTypes: string[]) => 
     wrapper.append(checkbox, text);
     aside.append(wrapper);
   });
+
+  const sortTitle = document.createElement('h2');
+  sortTitle.textContent = 'Sort By';
+
+  aside.append(sortTitle);
+
+  const sortOptions = [
+    { value: 'featured', label: 'Featured' },
+    { value: 'price-asc', label: 'Price: Low to High' },
+    { value: 'price-desc', label: 'Price: High to Low' },
+  ];
+
+  sortOptions.forEach(({ value, label }) => {
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'sort';
+    radio.value = value;
+
+    if (value === 'featured') {
+      radio.checked = true;
+    }
+
+    const wrapper = document.createElement('label');
+    wrapper.className = 'sidebar-option';
+
+    const text = document.createElement('span');
+    text.textContent = label;
+
+    wrapper.append(radio, text);
+    aside.append(wrapper);
+  });
+
   return aside;
 }
