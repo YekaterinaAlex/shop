@@ -5,10 +5,47 @@ export type CartEntry = {
   quantity: number;
 };
 
-let cart: CartEntry[] = [];
-
+const CART_STORAGE_KEY = 'candle-shop-cart';
 const PROMO_CODE = 'SALE10';
 const DISCOUNT_RATE = 0.1;
+let activePromoCode = '';
+
+function loadCart(): CartEntry[] {
+  try {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+
+    if (!storedCart) return [];
+
+    const parsedCart: unknown = JSON.parse(storedCart);
+
+    if (!Array.isArray(parsedCart)) return [];
+
+    return parsedCart.filter((item): item is CartEntry => {
+      if (typeof item !== 'object' || item === null) return false;
+
+      return (
+        Number.isInteger(item.productId) &&
+        products.some((product) => product.id === item.productId) &&
+        Number.isInteger(item.quantity) &&
+        item.quantity >= 1
+      );
+    });
+  } catch {
+    return [];
+  }
+}
+
+function saveCart(): void {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  } catch {
+    // Keep the cart in memory if localStorage is unavailable.
+  }
+
+  window.dispatchEvent(new Event('cartchange'));
+}
+
+let cart: CartEntry[] = loadCart();
 
 export function getCart(): CartEntry[] {
   return cart;
@@ -22,6 +59,8 @@ export function addToCart(productId: number): void {
   } else {
     cart.push({ productId, quantity: 1 });
   }
+
+  saveCart();
 }
 
 export function increaseQuantity(productId: number): void {
@@ -34,10 +73,12 @@ export function decreaseQuantity(productId: number): void {
   if (!item || item.quantity <= 1) return;
 
   item.quantity -= 1;
+  saveCart();
 }
 
 export function removeFromCart(productId: number): void {
   cart = cart.filter((item) => item.productId !== productId);
+  saveCart();
 }
 
 export function getCartSubtotal(): number {
@@ -58,4 +99,12 @@ export function getDiscountAmount(promoCode: string): number {
 
 export function getCartTotal(promoCode = ''): number {
   return getCartSubtotal() - getDiscountAmount(promoCode);
+}
+
+export function getActivePromoCode(): string {
+  return activePromoCode;
+}
+
+export function setActivePromoCode(code: string): void {
+  activePromoCode = code;
 }

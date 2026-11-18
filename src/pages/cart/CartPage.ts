@@ -2,6 +2,8 @@ import { products } from '../../data/products';
 import {
   getCart,
   getCartSubtotal,
+  getActivePromoCode,
+  setActivePromoCode,
   increaseQuantity,
   decreaseQuantity,
   removeFromCart,
@@ -14,14 +16,15 @@ export function CartPage(): HTMLElement {
   const section = document.createElement('section');
   section.className = 'cart';
 
-  let activePromoCode = '';
-
   function render(): void {
     const cart = getCart();
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
     const title = document.createElement('h1');
     title.textContent = `Your items (${totalItems})`;
+
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'cart__items';
 
     if (cart.length === 0) {
       const emptyState = document.createElement('div');
@@ -35,24 +38,19 @@ export function CartPage(): HTMLElement {
       link.textContent = '← Continue shopping';
 
       emptyState.append(message, link);
-      section.replaceChildren(title, emptyState);
+      itemsContainer.append(emptyState);
+    } else {
+      cart.forEach((item) => {
+        const product = products.find((product) => product.id === item.productId);
 
-      return;
+        if (!product) return;
+
+        itemsContainer.append(CartItem(product, item.quantity));
+      });
     }
 
-    const itemsContainer = document.createElement('div');
-    itemsContainer.className = 'cart__items';
-
-    cart.forEach((item) => {
-      const product = products.find((product) => product.id === item.productId);
-
-      if (!product) return;
-
-      itemsContainer.append(CartItem(product, item.quantity));
-    });
-
-    const summary = OrderSummary(getCartSubtotal(), activePromoCode, (code) => {
-      activePromoCode = code;
+    const summary = OrderSummary(getCartSubtotal(), getActivePromoCode(), (code) => {
+      setActivePromoCode(code);
     });
 
     section.replaceChildren(title, itemsContainer, summary);

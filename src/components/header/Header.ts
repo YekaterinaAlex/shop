@@ -1,3 +1,4 @@
+import { getCart } from '../../state/cart-state';
 import './header.css';
 
 export function Header(): HTMLElement {
@@ -19,7 +20,6 @@ export function Header(): HTMLElement {
   const links = [
     { text: 'About Us', href: '#/' },
     { text: 'Shop', href: '#/catalog' },
-    { text: 'Cart', href: '#/cart' },
   ];
 
   links.forEach(({ text, href }) => {
@@ -31,6 +31,27 @@ export function Header(): HTMLElement {
 
     nav.append(link);
   });
+
+  const cartLink = document.createElement('a');
+  cartLink.className = 'header__link header__cart';
+  cartLink.href = '#/cart';
+  cartLink.textContent = 'Cart';
+
+  const cartBadge = document.createElement('span');
+  cartBadge.className = 'header__cart-badge';
+
+  cartLink.append(cartBadge);
+  nav.append(cartLink);
+
+  function updateCartBadge(): void {
+    const totalItems = getCart().reduce((total, item) => total + item.quantity, 0);
+    cartBadge.textContent = String(totalItems);
+    cartLink.setAttribute('aria-label', `Cart, ${totalItems} items`);
+  }
+
+  updateCartBadge();
+
+  window.addEventListener('cartchange', updateCartBadge);
 
   container.append(logo, nav);
   header.append(container);
