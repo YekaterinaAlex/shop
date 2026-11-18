@@ -1,6 +1,8 @@
 import { products } from '../../data/products';
 import { ProductCard } from '../../components/product-card/ProductCard';
 import { Sidebar } from '../../components/sidebar/Sidebar';
+import { sortProducts } from '../../utils/sortProducts';
+import type { SortOption } from '../../utils/sortProducts';
 
 import './catalog.css';
 
@@ -20,7 +22,7 @@ export function CatalogPage(): HTMLElement {
   const layout = document.createElement('div');
   layout.className = 'layout';
 
-  function renderProducts(categories: string[], waxTypes: string[]): void {
+  function renderProducts(categories: string[], waxTypes: string[], sortBy: SortOption): void {
     const filtered = products.filter((product) => {
       const matchesCategory = categories.length === 0 || categories.includes(product.candleType);
 
@@ -29,7 +31,9 @@ export function CatalogPage(): HTMLElement {
       return matchesCategory && matchesWax;
     });
 
-    const cards = filtered.map((product) => ProductCard(product));
+    const sorted = sortProducts(filtered, sortBy);
+
+    const cards = sorted.map((product) => ProductCard(product));
 
     grid.replaceChildren(...cards);
   }
@@ -37,7 +41,7 @@ export function CatalogPage(): HTMLElement {
   layout.append(sidebar, grid);
   section.append(title, layout);
 
-  renderProducts([], []);
+  renderProducts([], [], 'featured');
 
   return section;
 }
