@@ -64,3 +64,37 @@
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
 }
+
+.product-card .quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 12px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  background-color: var(--color-surface);
+}
+
+.product-card .quantity-control button {
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.product-card .quantity-control button:hover {
+  color: var(--color-primary);
+}
+
+.product-card .quantity-control span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.product-card .quantity-control[hidden] {
+  display: none;
+}
