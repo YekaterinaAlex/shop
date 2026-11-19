@@ -11,6 +11,10 @@ export function Sidebar(
     maxPrice: number,
   ) => void,
 ): HTMLElement {
+  const MIN_PRICE = 11;
+  const MAX_PRICE = 26;
+  const PRICE_SPAN = MAX_PRICE - MIN_PRICE;
+
   const aside = document.createElement('aside');
   aside.className = 'sidebar';
 
@@ -28,35 +32,47 @@ export function Sidebar(
     );
   }
 
-  const title = document.createElement('h2');
-  title.textContent = 'Categories';
+  function createCheckbox(
+    value: string,
+    label: string,
+    selectedValues: string[],
+  ): HTMLLabelElement {
+    const wrapper = document.createElement('label');
+    wrapper.className = 'sidebar-option';
 
-  aside.append(title);
-
-  filters.candleType.forEach(({ value, label }) => {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.value = value;
-
-    const wrapper = document.createElement('label');
-    wrapper.className = 'sidebar-option';
 
     const text = document.createElement('span');
     text.textContent = label;
 
     checkbox.addEventListener('change', () => {
       if (checkbox.checked) {
-        selectedCategories.push(value);
+        selectedValues.push(value);
       } else {
-        const index = selectedCategories.indexOf(value);
-        selectedCategories.splice(index, 1);
+        const index = selectedValues.indexOf(value);
+
+        if (index !== -1) {
+          selectedValues.splice(index, 1);
+        }
       }
 
       notifyChange();
     });
 
     wrapper.append(checkbox, text);
-    aside.append(wrapper);
+
+    return wrapper;
+  }
+
+  const title = document.createElement('h2');
+  title.textContent = 'Categories';
+
+  aside.append(title);
+
+  filters.candleType.forEach(({ value, label }) => {
+    aside.append(createCheckbox(value, label, selectedCategories));
   });
 
   const waxTitle = document.createElement('h2');
@@ -65,29 +81,7 @@ export function Sidebar(
   aside.append(waxTitle);
 
   filters.waxType.forEach(({ value, label }) => {
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = value;
-
-    const wrapper = document.createElement('label');
-    wrapper.className = 'sidebar-option';
-
-    const text = document.createElement('span');
-    text.textContent = label;
-
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked) {
-        selectedWaxTypes.push(value);
-      } else {
-        const index = selectedWaxTypes.indexOf(value);
-        selectedWaxTypes.splice(index, 1);
-      }
-
-      notifyChange();
-    });
-
-    wrapper.append(checkbox, text);
-    aside.append(wrapper);
+    aside.append(createCheckbox(value, label, selectedWaxTypes));
   });
 
   const sortTitle = document.createElement('h2');
@@ -142,29 +136,29 @@ export function Sidebar(
 
   const minSlider = document.createElement('input');
   minSlider.type = 'range';
-  minSlider.min = '11';
-  minSlider.max = '26';
-  minSlider.value = '11';
+  minSlider.min = String(MIN_PRICE);
+  minSlider.max = String(MAX_PRICE);
+  minSlider.value = String(MIN_PRICE);
   minSlider.setAttribute('aria-label', 'Minimum price');
 
   const maxSlider = document.createElement('input');
   maxSlider.type = 'range';
-  maxSlider.min = '11';
-  maxSlider.max = '26';
-  maxSlider.value = '26';
+  maxSlider.min = String(MIN_PRICE);
+  maxSlider.max = String(MAX_PRICE);
+  maxSlider.value = String(MAX_PRICE);
   maxSlider.setAttribute('aria-label', 'Maximum price');
 
   function updateTrack(): void {
     const min = Number(minSlider.value);
     const max = Number(maxSlider.value);
 
-    activeTrack.style.left = `${((min - 11) / 15) * 100}%`;
-    activeTrack.style.width = `${((max - min) / 15) * 100}%`;
+    activeTrack.style.left = `${((min - MIN_PRICE) / PRICE_SPAN) * 100}%`;
+    activeTrack.style.width = `${((max - min) / PRICE_SPAN) * 100}%`;
 
-    if (min === max && min === 11) {
+    if (min === max && min === MIN_PRICE) {
       maxSlider.style.zIndex = '3';
       minSlider.style.zIndex = '2';
-    } else if (min === max && max === 26) {
+    } else if (min === max && max === MAX_PRICE) {
       minSlider.style.zIndex = '3';
       maxSlider.style.zIndex = '2';
     } else {
@@ -175,42 +169,41 @@ export function Sidebar(
 
   updateTrack();
 
-  updateTrack();
-
   const priceLabels = document.createElement('div');
   priceLabels.className = 'price-labels';
 
   const minLabel = document.createElement('span');
-  minLabel.textContent = '$11';
+  minLabel.textContent = `$${MIN_PRICE}`;
 
   const maxLabel = document.createElement('span');
-  maxLabel.textContent = '$26';
+  maxLabel.textContent = `$${MAX_PRICE}`;
 
   priceLabels.append(minLabel, maxLabel);
   priceRange.append(minSlider, maxSlider);
 
   const selectedPrice = document.createElement('p');
   selectedPrice.className = 'selected-price';
-  selectedPrice.textContent = '$11 – $26';
+  selectedPrice.textContent = `$${MIN_PRICE} – $${MAX_PRICE}`;
+
+  function updatePrice(): void {
+    selectedPrice.textContent = `$${minSlider.value} – $${maxSlider.value}`;
+
+    updateTrack();
+    notifyChange();
+  }
 
   minSlider.addEventListener('input', () => {
     const min = Math.min(Number(minSlider.value), Number(maxSlider.value));
 
     minSlider.value = String(min);
-    selectedPrice.textContent = `$${min} – $${maxSlider.value}`;
-
-    updateTrack();
-    notifyChange();
+    updatePrice();
   });
 
   maxSlider.addEventListener('input', () => {
     const max = Math.max(Number(maxSlider.value), Number(minSlider.value));
 
     maxSlider.value = String(max);
-    selectedPrice.textContent = `$${minSlider.value} – $${max}`;
-
-    updateTrack();
-    notifyChange();
+    updatePrice();
   });
 
   aside.append(priceTitle, selectedPrice, priceRange, priceLabels);
