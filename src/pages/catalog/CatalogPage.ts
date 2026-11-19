@@ -1,8 +1,8 @@
 import { products } from '../../data/products';
 import { ProductCard } from '../../components/product-card/ProductCard';
 import { Sidebar } from '../../components/sidebar/Sidebar';
-import { sortProducts } from '../../utils/sortProducts';
 import type { SortOption } from '../../utils/sortProducts';
+import { getVisibleProducts } from '../../utils/getVisibleProducts';
 
 import heroImage from '../../assets/images/hero.png';
 
@@ -70,17 +70,16 @@ export function CatalogPage(): HTMLElement {
     currentMinPrice = minPrice;
     currentMaxPrice = maxPrice;
 
-    const filtered = products.filter((product) => {
-      const matchesCategory = categories.length === 0 || categories.includes(product.candleType);
-      const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
-      const matchesWax = waxTypes.length === 0 || waxTypes.includes(product.waxType);
-      const matchesSearch = product.name.toLowerCase().includes(searchQuery);
-      return matchesCategory && matchesWax && matchesPrice && matchesSearch;
+    const visibleProducts = getVisibleProducts(products, {
+      categories,
+      waxTypes,
+      minPrice,
+      maxPrice,
+      searchQuery,
+      sortBy,
     });
 
-    const sorted = sortProducts(filtered, sortBy);
-
-    const cards = sorted.map((product) => ProductCard(product));
+    const cards = visibleProducts.map((product) => ProductCard(product));
 
     grid.replaceChildren(...cards);
 
