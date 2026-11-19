@@ -80,6 +80,16 @@ export function ProductCard(product: Product): HTMLElement {
   updateButton();
   window.addEventListener('cartchange', updateButton);
 
+  card.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+
+    if (target.closest('button')) {
+      return;
+    }
+
+    window.location.hash = `#/product/${product.id}`;
+  });
+
   card.append(image, title, type, price, button, quantityControl);
 
   return card;
