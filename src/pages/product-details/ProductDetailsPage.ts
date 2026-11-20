@@ -1,5 +1,5 @@
 import { products } from '../../data/products';
-import { addToCart } from '../../state/cart-state';
+import { CartControls } from '../../components/cart-controls/CartControls';
 
 import './product-details.css';
 
@@ -28,6 +28,7 @@ export function ProductDetailsPage(id: number): HTMLElement {
 
   const price = document.createElement('p');
   price.textContent = `$${product.price}`;
+  price.className = 'product-details-price';
 
   const wax = document.createElement('p');
   wax.textContent = `Wax: ${product.waxType}`;
@@ -35,17 +36,12 @@ export function ProductDetailsPage(id: number): HTMLElement {
   const weight = document.createElement('p');
   weight.textContent = `Weight: ${product.weight} g`;
 
-  const button = document.createElement('button');
-  button.textContent = 'Add to Cart';
-
-  button.addEventListener('click', () => {
-    addToCart(product.id);
-  });
+  const cartControls = CartControls(product.id, product.name);
 
   const info = document.createElement('div');
   info.className = 'product-details-info';
 
-  info.append(title, price, description, wax, weight, button);
+  info.append(title, price, description, wax, weight, cartControls);
 
   section.append(image, info);
 

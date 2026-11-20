@@ -30,23 +30,17 @@
   color: var(--color-text-muted);
 }
 
-.product-details button {
-  padding: 14px 32px;
-  margin-top: 24px;
-
-  border: none;
-  border-radius: 6px;
-
-  background-color: var(--color-primary);
-  color: white;
-
-  font-size: 15px;
-  font-family: inherit;
-  cursor: pointer;
+.product-details-info .cart-controls {
+  max-width: 226px;
 }
 
-.product-details button:hover {
-  filter: brightness(0.9);
+.product-details .product-details-price {
+  margin: 4px 0 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  color: var(--color-text);
 }
 
 @media (max-width: 768px) {
