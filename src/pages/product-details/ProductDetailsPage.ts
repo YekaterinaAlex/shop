@@ -38,10 +38,15 @@ export function ProductDetailsPage(id: number): HTMLElement {
 
   const cartControls = CartControls(product.id, product.name);
 
+  const backLink = document.createElement('a');
+  backLink.className = 'product-details-back';
+  backLink.href = '#/catalog';
+  backLink.textContent = '← Back to Catalog';
+
   const info = document.createElement('div');
   info.className = 'product-details-info';
 
-  info.append(title, price, description, wax, weight, cartControls);
+  info.append(backLink, title, price, description, wax, weight, cartControls);
 
   section.append(image, info);
 
