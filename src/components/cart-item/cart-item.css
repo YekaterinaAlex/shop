@@ -55,6 +55,11 @@
   font-size: 18px;
 }
 
+.quantity-control button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .cart-item__controls {
   display: flex;
   align-items: center;

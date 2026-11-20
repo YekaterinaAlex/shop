@@ -38,6 +38,7 @@ export function CartControls(productId: number, productName: string): HTMLElemen
     }
 
     quantityValue.textContent = String(cartItem.quantity);
+    decreaseButton.disabled = cartItem.quantity <= 1;
     addButton.hidden = true;
     quantityControl.hidden = false;
   }
