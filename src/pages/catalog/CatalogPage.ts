@@ -48,6 +48,25 @@ export function CatalogPage(): HTMLElement {
 
   const sidebar = Sidebar(renderProducts);
 
+  const sidebarContainer = document.createElement('div');
+  sidebarContainer.className = 'sidebar-container';
+
+  const filterButton = document.createElement('button');
+  filterButton.className = 'filter-toggle';
+  filterButton.type = 'button';
+  filterButton.textContent = 'Filters & Sort ▾';
+  filterButton.setAttribute('aria-expanded', 'false');
+
+  filterButton.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('sidebar-open');
+
+    filterButton.textContent = isOpen ? 'Filters & Sort ▴' : 'Filters & Sort ▾';
+
+    filterButton.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  sidebarContainer.append(filterButton, sidebar);
+
   const layout = document.createElement('div');
   layout.className = 'layout';
 
@@ -109,7 +128,7 @@ export function CatalogPage(): HTMLElement {
 
   catalogContent.append(searchInput, grid);
 
-  layout.append(sidebar, catalogContent);
+  layout.append(sidebarContainer, catalogContent);
   section.append(hero, layout);
 
   renderProducts([], [], 'featured', 11, 26);
