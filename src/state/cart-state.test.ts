@@ -194,6 +194,28 @@ describe('cart-state', () => {
 
       expect(cartState.getDiscountAmount('SALE10')).toBe(firstProduct.price * 0.1);
     });
+
+    it('should accept the promo code regardless of letter case', () => {
+      cartState.addToCart(firstProduct.id);
+
+      expect(cartState.getDiscountAmount('sale10')).toBe(firstProduct.price * 0.1);
+    });
+
+    it('should ignore whitespace around the promo code', () => {
+      cartState.addToCart(firstProduct.id);
+
+      expect(cartState.getDiscountAmount(' SALE10 ')).toBe(firstProduct.price * 0.1);
+    });
+
+    it('should return 0 in the case of invalid promo code', () => {
+      cartState.addToCart(firstProduct.id);
+
+      expect(cartState.getDiscountAmount('INVALID')).toBe(0);
+    });
+
+    it('should return 0 in the case of empty cart', () => {
+      expect(cartState.getDiscountAmount('SALE10')).toBe(0);
+    });
   });
 
   describe('getCartTotal', () => {
